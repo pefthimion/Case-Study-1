@@ -16,7 +16,7 @@ We will be analyzing how a country's ranking and GDP relates to it's income grou
 First, we will being by downloading the 2 files where we pulled our data from. This data was pulled from the internet as .csv files and was provided to us from you, our client. 
 
 ```{r setwd}
-setwd("/Users/Phillip/Github/Case-Study-1")
+setwd("/Users/Phillip/Github/Case-Study-1/Data")
 cat(" directory is set")
 ```
 
