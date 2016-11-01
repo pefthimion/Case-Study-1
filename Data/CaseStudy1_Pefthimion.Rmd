@@ -17,6 +17,7 @@ First, we will being by downloading the 2 files where we pulled our data from. T
 
 ```{r setwd}
 setwd("https://github.com/pefthimion/Case-Study-1/tree/master/Data")
+cat(" directory is set")
 ```
 
 ```{r download, include=TRUE}
