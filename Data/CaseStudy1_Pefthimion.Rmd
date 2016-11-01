@@ -16,6 +16,7 @@ We will be analyzing how a country's ranking and GDP relates to it's income grou
 First, we will being by downloading the 2 files where we pulled our data from. This data was pulled from the internet as .csv files and was provided to us from you, our client. 
 
 ```{r download, include=TRUE}
+setwd("~/GitHub/Case-Study-1/Data")
 # Inputs the files we will be using
 source('Download_Files_Case_Study_1.R')
 ```
@@ -113,11 +114,11 @@ We need to log transform the data because of the outliers in the data.
 
 ```{r Question 4}
 # Create boxplot where of Income Group vs log(GDP)
-Plot4Box <- ggplot(Merge1, aes(x=Income.Group, y=GDP, fill = Income.Group)) + geom_boxplot() +scale_y_log10() + ggtitle('Income Group vs. GDP (in millions of US Dollars)')
+#Plot4Box <- ggplot(Merge1, aes(x=Income.Group, y=GDP, fill = Income.Group)) + geom_boxplot() +scale_y_log10() + ggtitle('Income Group vs. GDP (in millions of US Dollars)')
 
 # If this were local
 # Plot4Box
-source("https://github.com/pefthimion/Case-Study-1/blob/master/Analysis/Boxplot_Income_Group_vs_GDP.pdf")
+# source("https://github.com/pefthimion/Case-Study-1/blob/master/Analysis/Boxplot_Income_Group_vs_GDP.pdf")
 
 # Boxplot is also in Analysis directory
 ```
