@@ -35,14 +35,14 @@ source('Tidying_Case_Study_1.R')
 We are being asked to merge all of the data based on the country shortcode (CountryCode) and need to find if all of the IDs match.
 
 We will now merge the 2 data sets together so we have one file with the CountryCode, the GDP of each country, their rankings, and each country's income group. Before the merge happens, we have to change the type of some of the data. We will be making the GDP numbers, the CountryCode, and Income Groups characters. This will facilitate the merge. The data will now be easier to read in one place.
-```{r Merge}
+```{r Merge, include = TRUE}
 # merges the GDPdata2 and Edu2 into Merge1
 source('Merge_Case_Study_1.R')
 ```
 
 Now we will try to find how many countries matched. To find out how many match we will remove any blanks or NAs in the Rankings. This is because every country from one of the datasets had a ranking. This will subset out any that don't and therefore do not match. It will also potentialy help us further tidy up the data.
 
-```{r Question 1}
+```{r Question 1, include = TRUE}
 # Eliminate any black spaces and NAs from Merge1
 Merge1 <- subset(Merge1, Merge1$Ranking !="")
 Merge1 <- Merge1[!is.na(Merge1$Ranking),]
@@ -57,7 +57,7 @@ Therefore, we have found that 189 IDs match.
 South Sudan does not have an income group. Therefore, it must have existed in one data set, but not the other.
 In order to keep our data clean, we will remove South Sudan from our further analysis because we will be dealing with income groups and South Sudan does not have data for one in the information that we have been given.
 
-```{r Remove South Sudan}
+```{r Remove South Sudan, include = TRUE}
 # We will now remove South Sudan from our data set, as we cannot have any NAs in our income group data
 Merge1 <- Merge1[!is.na(Merge1$Income.Group),]
 ```
@@ -67,7 +67,7 @@ Merge1 <- Merge1[!is.na(Merge1$Income.Group),]
 
 We are asked to find the country with the 13th smallest GDP.
 To do this we have to put our GDP in ascending order so the country with the smallest GDP is at the top. This is why we had to convert GDP into numeric from a factor before.
-```{r Question 2}
+```{r Question 2, include = TRUE}
 # Find country with 13th lowest GDP
 Merge1.Ascending <- Merge1[order(Merge1$GDP),]
 Merge1.Ascending[13,]
@@ -82,7 +82,7 @@ We need to look at the GDP rankings for countries that are in the "High Income: 
 
 To do so first we will subset our data into each of our 5 income groups (low income, lower middle income, upper middle income, high income:OECD, and high income: nonOECD).
 
-```{r Question 3}
+```{r Question 3, include = TRUE}
 # Makes a seperate subset for each income group
 Merge1.LowIncome <- subset(Merge1, Merge1$Income.Group == "Low income")
 Merge1.LowerMiddleIncome <- subset(Merge1, Merge1$Income.Group == "Lower middle income")
@@ -94,7 +94,7 @@ This is why we removed South Sudan from our data, it does not have listed any in
 
 Then, we need to find the average. This will be a 2 step process. First, we need to convert our rankings datatype from factor to numeric. Then we will take the average ranking of each of the 2 specified income types.
 
-```{r Question 3 part 2}
+```{r Question 3 part 2, include = TRUE}
 # Makes the 2 subsets Ranking column numeric, then finds the mean for the income group
 Merge1.HighIncomeNonOECD$Ranking <- as.numeric(Merge1.HighIncomeNonOECD$Ranking)
 mean(Merge1.HighIncomeNonOECD$Ranking)
@@ -112,7 +112,7 @@ We will be plotting the GDP for all of the countries. We will create a graph of 
 
 We need to log transform the data because of the outliers in the data.
 
-```{r Question 4}
+```{r Question 4, include = TRUE}
 # Create boxplot where of Income Group vs log(GDP)
 #Plot4Box <- ggplot(Merge1, aes(x=Income.Group, y=GDP, fill = Income.Group)) + geom_boxplot() +scale_y_log10() + ggtitle('Income Group vs. GDP (in millions of US Dollars)')
 
@@ -133,7 +133,7 @@ Low income countries have the lowest average GDP and also have the smallest amou
 
 To calculate the 5 seperate quantile groups we find the length of our rankings and then divide it into 5 equal quantiles.
 
-```{r Question 5 Findong Quantiles}
+```{r Question 5 Findong Quantiles, include = TRUE}
 # Find range of each quantile
 length(Merge1$Ranking)
 189*.2
@@ -151,7 +151,7 @@ Q5: 152 - 189
 
 First, we will make sure that our rankings data is the correct file type (numeric), then we will order the data by ranking. 
 
-```{r Question 5 Order data by Rankings}
+```{r Question 5 Order data by Rankings, include = TRUE}
 # Make the lower middle income subset's Ranking numeric
 Merge1.LowerMiddleIncome
 Merge1.LowerMiddleIncome$Ranking <- as.numeric(Merge1.LowerMiddleIncome$Ranking)
@@ -163,7 +163,7 @@ Merge1.LowerMiddleIncome.OrderRanking <- Merge1.LowerMiddleIncome[order(Merge1.L
 
 Next we will subset the data to find the countries with a top 38 ranking and finally, show all the countries with a top 38 ranking that are considered lower middle income.
 
-```{r Question 5 Top 38 Lower Middle Income}
+```{r Question 5 Top 38 Lower Middle Income, include = TRUE}
 # Find top 38 ranked countries
 Merge1.LowerMiddleIncome.OrderRankingTop38 <- subset(Merge1.LowerMiddleIncome.OrderRanking, Merge1.LowerMiddleIncome.OrderRanking$Ranking <= 38)
 
@@ -179,7 +179,7 @@ The countries that are in the lower middle income group that have a top 38 ranki
 Now we will check our answer by creating a table.
 
 First, we will create a set quantiles based on the quantiles we created above.
-```{r Quantile}
+```{r Quantile, include = TRUE}
 # Create a new column that lists each country's quantile group
 Quantiles <-NULL
 Quantiles[1:37] <- 1
@@ -192,7 +192,7 @@ Quantiles
 
 Now we will put them into a table where it is income groups vs. quantiles.
 
-```{r table}
+```{r table, include = TRUE}
 # Create a table of income group vs quantile
 table(Merge1$Income.Group, Quantiles)
 ```
