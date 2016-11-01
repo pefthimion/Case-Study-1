@@ -23,6 +23,10 @@ cat("Directory is set")
 
 # Download the files from the internet and save them into our workspace
 
-GDP <- read.csv("getdata%2Fdata%2FGDP.csv", sep = ",", header = TRUE)
-Edu <- read.csv("getdata%2Fdata%2FEDSTATS_Country.csv", sep = ",", header = TRUE)
+URL_GDP <- read.csv("getdata%2Fdata%2FGDP.csv", sep = ",", header = TRUE)
+URL_Edu <- read.csv("getdata%2Fdata%2FEDSTATS_Country.csv", sep = ",", header = TRUE)
+
+GDP <- repmis::source_data(URL_GDP)
+Edu <- repmis::source_data(URL_Edu)
+
 cat("files read")
