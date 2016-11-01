@@ -17,7 +17,7 @@ First, we will being by downloading the 2 files where we pulled our data from. T
 
 ```{r download, include=TRUE}
 # Inputs the files we will be using
-source('Download_Files_Case_Study_1.R')
+source('Download_Files_Case_Study_1.R', local = TRUE)
 ```
 
 ### Tidying
