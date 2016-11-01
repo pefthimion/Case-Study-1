@@ -19,10 +19,10 @@ getwd()
 
 # On Github
 setwd("https://github.com/pefthimion/Case-Study-1/tree/master/Data")
-
+cat("Directory is set")
 
 # Download the files from the internet and save them into our workspace
 
 GDP <- read.csv("getdata%2Fdata%2FGDP.csv", sep = ",", header = TRUE)
 Edu <- read.csv("getdata%2Fdata%2FEDSTATS_Country.csv", sep = ",", header = TRUE)
-
+cat("files read")
