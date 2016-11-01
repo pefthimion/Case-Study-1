@@ -18,7 +18,7 @@ getwd()
 # setwd("/Users/Phillip/Documents/SMU/Intro to Data Science/Case Study 1")
 
 # On Github
-setwd("https://github.com/pefthimion/Case-Study-1")
+# setwd("https://github.com/pefthimion/Case-Study-1")
 
 
 # Download the files from the internet and save them into our workspace
