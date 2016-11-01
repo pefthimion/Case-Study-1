@@ -13,7 +13,7 @@ library(ggplot2)
 
 # First we have to set our working directory so we know where to call and files we use from 
 getwd()
-
+cat("File is read")
 # When coding on my computer
 # setwd("/Users/Phillip/Documents/SMU/Intro to Data Science/Case Study 1")
 
