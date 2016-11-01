@@ -1,0 +1,205 @@
+---
+title: "CaseStudy1_Pefthimion"
+output: html_document
+---
+
+### Introduction
+
+With the given data files we have information on the annual Gross Domestic Product (GDP) for 190 countries in 2012. Each of them are also assigned a GDP ranking (from # 1 to 190). We are also provided with a further categorization of 5 different income groups that each ranked country falls into. 
+
+The first file provides us with the annual GDP (in terms of millions of US Dollars) as well as each country's GDP ranking. The second data file has a lot of information, mostly about the educational system of each country, but we will be primarily looking at each country's income group.
+
+We will be analyzing how a country's ranking and GDP relates to it's income group. 
+
+### Downloading
+
+First, we will being by downloading the 2 files where we pulled our data from. This data was pulled from the internet as .csv files and was provided to us from you, our client. 
+
+```{r download, include=TRUE}
+# Inputs the files we will be using
+source('Download_Files_Case_Study_1.R')
+```
+
+### Tidying
+
+Next we will begin by tidying up the data set. Many countries in the data set do not have any information on their GDP or rankings. We will not be using that information for our analysis. Also, there were regions listed, which are not countries. Those too will not be used in our analysis. The data set with educational information contains a lot of information that we will not be using. These columns will also be removed in order to give us a cleaner data set. 
+
+```{r tidy, include=TRUE}
+# Cleans the data of blanks and NAs for both data sets
+source('Tidying_Case_Study_1.R')
+```
+
+### Merging and Question 1 
+
+We are being asked to merge all of the data based on the country shortcode (CountryCode) and need to find if all of the IDs match.
+
+We will now merge the 2 data sets together so we have one file with the CountryCode, the GDP of each country, their rankings, and each country's income group. Before the merge happens, we have to change the type of some of the data. We will be making the GDP numbers, the CountryCode, and Income Groups characters. This will facilitate the merge. The data will now be easier to read in one place.
+```{r Merge}
+# merges the GDPdata2 and Edu2 into Merge1
+source('Merge_Case_Study_1.R')
+```
+
+Now we will try to find how many countries matched. To find out how many match we will remove any blanks or NAs in the Rankings. This is because every country from one of the datasets had a ranking. This will subset out any that don't and therefore do not match. It will also potentialy help us further tidy up the data.
+
+```{r Question 1}
+# Eliminate any black spaces and NAs from Merge1
+Merge1 <- subset(Merge1, Merge1$Ranking !="")
+Merge1 <- Merge1[!is.na(Merge1$Ranking),]
+
+# Now we wil look by income group, the other variable not in both of the original data sets. It will tell us if anything does not match.
+Merge1$Income.Group
+Merge1$Income.Group[155]
+Merge1[155,]
+```
+We have 190 IDs listed and have found one that does not match.
+Therefore, we have found that 189 IDs match. 
+South Sudan does not have an income group. Therefore, it must have existed in one data set, but not the other.
+In order to keep our data clean, we will remove South Sudan from our further analysis because we will be dealing with income groups and South Sudan does not have data for one in the information that we have been given.
+
+```{r Remove South Sudan}
+# We will now remove South Sudan from our data set, as we cannot have any NAs in our income group data
+Merge1 <- Merge1[!is.na(Merge1$Income.Group),]
+```
+
+
+### Question 2
+
+We are asked to find the country with the 13th smallest GDP.
+To do this we have to put our GDP in ascending order so the country with the smallest GDP is at the top. This is why we had to convert GDP into numeric from a factor before.
+```{r Question 2}
+# Find country with 13th lowest GDP
+Merge1.Ascending <- Merge1[order(Merge1$GDP),]
+Merge1.Ascending[13,]
+```
+
+The country with the 13th smallest GDP of our ranked countries is St. Kitts and Nevis (KNA).
+In 2012, St. Kitts and Nevis had an annual GDP of $767,000,000. Remeber, our data's GDP is in terms of millions of US dollars.
+
+### Question 3
+
+We need to look at the GDP rankings for countries that are in the "High Income: OECD" income group and countries that are in the "High Income: nonOECD" group. 
+
+To do so first we will subset our data into each of our 5 income groups (low income, lower middle income, upper middle income, high income:OECD, and high income: nonOECD).
+
+```{r Question 3}
+# Makes a seperate subset for each income group
+Merge1.LowIncome <- subset(Merge1, Merge1$Income.Group == "Low income")
+Merge1.LowerMiddleIncome <- subset(Merge1, Merge1$Income.Group == "Lower middle income")
+Merge1.UpperMiddleIncome <- subset(Merge1, Merge1$Income.Group == "Upper middle income")
+Merge1.HighIncomeNonOECD <- subset(Merge1, Merge1$Income.Group == "High income: nonOECD")
+Merge1.HighIncomeOECD <- subset(Merge1, Merge1$Income.Group == "High income: OECD")
+```
+This is why we removed South Sudan from our data, it does not have listed any income type.
+
+Then, we need to find the average. This will be a 2 step process. First, we need to convert our rankings datatype from factor to numeric. Then we will take the average ranking of each of the 2 specified income types.
+
+```{r Question 3 part 2}
+# Makes the 2 subsets Ranking column numeric, then finds the mean for the income group
+Merge1.HighIncomeNonOECD$Ranking <- as.numeric(Merge1.HighIncomeNonOECD$Ranking)
+mean(Merge1.HighIncomeNonOECD$Ranking)
+
+Merge1.HighIncomeOECD$Ranking <- as.numeric(Merge1.HighIncomeOECD$Ranking)
+mean(Merge1.HighIncomeOECD$Ranking)
+```
+
+The average ranking for countries in the high income:NonOECD income group is 93.73913.
+The average ranking for countries in the high income:OECD income group is 110.0667.
+
+### Question 4
+
+We will be plotting the GDP for all of the countries. We will create a graph of boxplots broken up by income group and plot income group versus GDP, which will be in terms of millions of US Dollars. 
+
+We need to log transform the data because of the outliers in the data.
+
+```{r Question 4}
+# Create boxplot where of Income Group vs log(GDP)
+Plot4Box <- ggplot(Merge1, aes(x=Income.Group, y=GDP, fill = Income.Group)) + geom_boxplot() +scale_y_log10() + ggtitle('Income Group vs. GDP (in millions of US Dollars)')
+
+# If this were local
+# Plot4Box
+source("https://github.com/pefthimion/Case-Study-1/blob/master/Analysis/Boxplot_Income_Group_vs_GDP.pdf")
+
+# Boxplot is also in Analysis directory
+```
+
+The high income:OECD group has both the country with the highest GDP as well as being the income group with the highest average GDP. Then, the income group with the second highest average is the upper middle class. It, suprisingly, has a higher maximum value and a higher mean than high income:nonOECD countries. However, the upper middle class countries have much higher variation. 
+
+Lower middle income has the most variation as well as the highest range. The GDP of a lower middle class country could be higher or lower than most of the countries in any other income group. Part of this could be due to the fact that there are more countries considered lower middle income than any of the other income groups.
+
+Low income countries have the lowest average GDP and also have the smallest amount of variation. One notable is that there are countries that are considered lower middle income that have a GDP well below that of the average low income country.
+
+### Question 5
+
+To calculate the 5 seperate quantile groups we find the length of our rankings and then divide it into 5 equal quantiles.
+
+```{r Question 5 Findong Quantiles}
+# Find range of each quantile
+length(Merge1$Ranking)
+189*.2
+189*.4
+189*.6
+189*.8
+```
+This means that our quantiles for the rankings will look like the following:
+
+Q1: 1-37
+Q2: 38-75
+Q3: 76-113
+Q4: 114-151
+Q5: 152 - 189
+
+First, we will make sure that our rankings data is the correct file type (numeric), then we will order the data by ranking. 
+
+```{r Question 5 Order data by Rankings}
+# Make the lower middle income subset's Ranking numeric
+Merge1.LowerMiddleIncome
+Merge1.LowerMiddleIncome$Ranking <- as.numeric(Merge1.LowerMiddleIncome$Ranking)
+str(Merge1.LowerMiddleIncome)
+
+# Order lower middle income by Ranking
+Merge1.LowerMiddleIncome.OrderRanking <- Merge1.LowerMiddleIncome[order(Merge1.LowerMiddleIncome$Ranking),]
+```
+
+Next we will subset the data to find the countries with a top 38 ranking and finally, show all the countries with a top 38 ranking that are considered lower middle income.
+
+```{r Question 5 Top 38 Lower Middle Income}
+# Find top 38 ranked countries
+Merge1.LowerMiddleIncome.OrderRankingTop38 <- subset(Merge1.LowerMiddleIncome.OrderRanking, Merge1.LowerMiddleIncome.OrderRanking$Ranking <= 38)
+
+# Find how many countries in top 38 are lower middle income
+Merge1.LowerMiddleIncome.OrderRankingTop38
+dim(Merge1.LowerMiddleIncome.OrderRankingTop38)
+```
+
+As shown above there are 9 countries that are considered lower middle income, but have a GDP that is one of the top 38 in the world. This would make them inside the top quantile (except one that would be at the top of quantile 2). This reinforces  the information from box plot shown above in question 4 where we saw that there are countries that are lower middle class (the blue shaded box) 
+
+The countries that are in the lower middle income group that have a top 38 ranking are India, El Salvador, Honduras, Georgia, Papau New Guinea, Senegal, Republic of Congo, Nicaragua, and Mongolia.
+
+Now we will check our answer by creating a table.
+
+First, we will create a set quantiles based on the quantiles we created above.
+```{r Quantile}
+# Create a new column that lists each country's quantile group
+Quantiles <-NULL
+Quantiles[1:37] <- 1
+Quantiles[38:75] <- 2
+Quantiles[76:113] <- 3
+Quantiles[114:151] <- 4
+Quantiles[152:189] <- 5
+Quantiles
+```
+
+Now we will put them into a table where it is income groups vs. quantiles.
+
+```{r table}
+# Create a table of income group vs quantile
+table(Merge1$Income.Group, Quantiles)
+```
+
+As the table above shows, there are 9 countries that have lower middle incomes that are in the top quantile.
+
+### Conclusion
+
+From the given datasets we were given information about country's GDP (in terms of millions of US dollars) and the countries GDP ranking for the year 2012. We concluded that out of all of the countries, 189 of them matched. In terms of ascending order of GDP (with the USA being at the bottom), St. Kitt's and Nevis (KNA) had the 13th lowest GDP with a GDP of $767,000,000. By analyzing the countries income groups we found, on average, high income non:OECD countries have better GDP ranking than high income OECD countries. We also concluded that there are 9 countries that are in the lower middle income group that are among the 38 nations with the highest GDP.
+
+
