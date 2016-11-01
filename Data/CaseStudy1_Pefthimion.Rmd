@@ -15,6 +15,10 @@ We will be analyzing how a country's ranking and GDP relates to it's income grou
 
 First, we will being by downloading the 2 files where we pulled our data from. This data was pulled from the internet as .csv files and was provided to us from you, our client. 
 
+```{r setwd}
+setwd("https://github.com/pefthimion/Case-Study-1/tree/master/Data")
+```
+
 ```{r download, include=TRUE}
 # Inputs the files we will be using
 source('Download_Files_Case_Study_1.R', local = TRUE)
