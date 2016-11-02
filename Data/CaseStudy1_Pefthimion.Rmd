@@ -1,6 +1,8 @@
 ---
 title: "CaseStudy1_Pefthimion"
-output: html_document
+output: 
+  html_document:
+    keep_md: true
 ---
 
 ### Introduction
@@ -17,7 +19,8 @@ First, we will being by downloading the 2 files where we pulled our data from. T
 
 ```{r setup}
 library(knitr)
-opts_knit$set(root_dir = "/Users/Phillip/Documents/SMU/Intro to Data Science/Case Study 1")
+opts_knit$set(root_dir = "/Users/Phillip/GitHub/Case-Study-1/Data")
+getwd()
 ```
 
 ```{r download, include=TRUE}

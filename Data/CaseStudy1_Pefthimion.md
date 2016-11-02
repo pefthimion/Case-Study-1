@@ -16,6 +16,11 @@ First, we will being by downloading the 2 files where we pulled our data from. T
 ```r
 library(knitr)
 opts_knit$set(root_dir = "/Users/Phillip/Documents/SMU/Intro to Data Science/Case Study 1")
+getwd()
+```
+
+```
+## [1] "/Users/Phillip/GitHub/Case-Study-1/Data"
 ```
 
 
