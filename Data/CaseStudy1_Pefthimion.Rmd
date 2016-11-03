@@ -125,7 +125,7 @@ We need to log transform the data because of the outliers in the data.
 #Plot4Box <- ggplot(Merge1, aes(x=Income.Group, y=GDP, fill = Income.Group)) + geom_boxplot() +scale_y_log10() + ggtitle('Income Group vs. GDP (in millions of US Dollars)')
 
 # If this were local
-# Plot4Box
+Plot4Box
 # source("https://github.com/pefthimion/Case-Study-1/blob/master/Analysis/Boxplot_Income_Group_vs_GDP.pdf")
 
 # Boxplot is also in Analysis directory
